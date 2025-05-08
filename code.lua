@@ -70,16 +70,16 @@ local RIFT_CONFIGS = {
     RARE_RIFTS = {
         enabled = true,
         rifts = { "silly-egg" },
-        minLuck = 5,
-        minTime = 2,
-        maxPlayers = 12
+        minLuck = 0,
+        minTime = 1,
+        maxPlayers = 0
     },
     WORLD_1_RIFTS = {
         enabled = true,
         rifts = { "void-egg", "nightmare-egg", "rainbow-egg" },
-        minLuck = 25,
-        minTime = 7,
-        maxPlayers = 8
+        minLuck = 0,
+        minTime = 0,
+        maxPlayers = 0
     },
     WORLD_2_RIFTS = {
         enabled = true,
@@ -114,6 +114,9 @@ local LOAD_TIMEOUT = 5
 
 -- Delay before checking rifts (in seconds)
 local PRE_RIFT_DELAY = 5
+
+-- File path for unrecognized rifts
+local UNRECOGNIZED_RIFTS_FILE = "RiftSniperV3\\unrecognized_rifts.json"
 
 -- LOGIC
 
@@ -212,7 +215,7 @@ local function waitForRifts()
     end
 
     if not rendered then
-        print("Timeout: Rendered not found in Workspace after " .. LOAD_TIMEOUT .. " seconds at " .. os.date("%H:%M:%S"))
+        error("Timeout: Rendered not found in Workspace after " .. LOAD_TIMEOUT .. " seconds at " .. os.date("%H:%M:%S"))
         return false
     end
 
@@ -225,7 +228,7 @@ local function waitForRifts()
     end
 
     if not rifts then
-        print("Timeout: Rifts not found in Rendered after " .. LOAD_TIMEOUT .. " seconds at " .. os.date("%H:%M:%S"))
+        error("Timeout: Rifts not found in Rendered after " .. LOAD_TIMEOUT .. " seconds at " .. os.date("%H:%M:%S"))
         return false
     end
 
@@ -239,6 +242,15 @@ local function checkRifts()
     local rifts = rendered and rendered:FindFirstChild("Rifts")
     if not rifts then
         return
+    end
+
+    -- Load or initialize unrecognized rifts data
+    local unrecognizedRifts = {}
+    if isfile(UNRECOGNIZED_RIFTS_FILE) then
+        local content = readfile(UNRECOGNIZED_RIFTS_FILE)
+        if content and content ~= "" then
+            unrecognizedRifts = HttpService:JSONDecode(content) or {}
+        end
     end
 
     for _, rift in pairs(rifts:GetChildren()) do
@@ -331,12 +343,23 @@ local function checkRifts()
             continue
         end
 
+        -- Log unrecognized rift to console and file
         warn("Rift " .. riftName .. " not in any configured list at " .. os.date("%H:%M:%S"))
+        if not table.find(unrecognizedRifts, riftName) then
+            table.insert(unrecognizedRifts, riftName)
+            writefile(UNRECOGNIZED_RIFTS_FILE, HttpService:JSONEncode(unrecognizedRifts))
+        end
     end
 end
 
 -- Main execution
-task.wait(PRE_RIFT_DELAY)
-if waitForRifts() then
-    checkRifts()
+local success, err = pcall(function()
+    task.wait(PRE_RIFT_DELAY)
+    if waitForRifts() then
+        checkRifts()
+    end
+end)
+
+if not success then
+    warn("Script execution failed: " .. tostring(err))
 end
