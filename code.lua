@@ -193,7 +193,7 @@ local function sendWebhook(riftName, playerCount, timerText, jobId, luckValue)
         request({Url = webhookData.url, Method = "POST", Headers = {["Content-Type"] = "application/json"}, Body = HttpService:JSONEncode(payload)})
     end)
     if success then
-        print("Successfully sent webhook for rift: " .. riftName .. " at " .. os.date("%H:%M:%S"))
+        print("Successfully sent webhook for rift: " .. riftName)
     else
         warn("Failed to send webhook for rift " .. riftName .. ": " .. tostring(errorMessage) .. " at " .. os.date("%H:%M:%S"))
     end
@@ -240,6 +240,8 @@ local function checkRifts()
     if not rifts then
         return
     end
+
+    local webhookSent = false
 
     for _, rift in pairs(rifts:GetChildren()) do
         local riftName = rift.Name
@@ -288,6 +290,7 @@ local function checkRifts()
             local parsedLuck = parseLuck(luckValue)
             if parsedLuck >= RIFT_CONFIGS.RARE_RIFTS.minLuck and timerMinutes >= RIFT_CONFIGS.RARE_RIFTS.minTime then
                 sendWebhook(riftName, playerCount, timerValue, game.JobId, luckValue)
+                webhookSent = true
             end
             continue
         end
@@ -300,6 +303,7 @@ local function checkRifts()
             local parsedLuck = parseLuck(luckValue)
             if parsedLuck >= RIFT_CONFIGS.WORLD_1_RIFTS.minLuck and timerMinutes >= RIFT_CONFIGS.WORLD_1_RIFTS.minTime then
                 sendWebhook(riftName, playerCount, timerValue, game.JobId, luckValue)
+                webhookSent = true
             end
             continue
         end
@@ -312,6 +316,7 @@ local function checkRifts()
             local parsedLuck = parseLuck(luckValue or "")
             if (RIFT_CONFIGS.WORLD_2_RIFTS.minLuck == 0 or parsedLuck >= RIFT_CONFIGS.WORLD_2_RIFTS.minLuck) and timerMinutes >= RIFT_CONFIGS.WORLD_2_RIFTS.minTime then
                 sendWebhook(riftName, playerCount, timerValue, game.JobId, luckValue)
+                webhookSent = true
             end
             continue
         end
@@ -323,6 +328,7 @@ local function checkRifts()
             
             if timerMinutes >= RIFT_CONFIGS.MISC_RIFTS.minTime then
                 sendWebhook(riftName, playerCount, timerValue, game.JobId, luckValue)
+                webhookSent = true
             end
             continue
         end
@@ -330,7 +336,11 @@ local function checkRifts()
         if isInRareRifts or isInWorld1Rifts or isInWorld2Rifts or isInMiscRifts then
             continue
         end
-        warn("Rift " .. riftName .. " not in any configured list at " .. os.date("%H:%M:%S"))
+        warn("Rift " .. riftName .. " is not in any configured list.")
+    end
+
+    if not webhookSent then
+        print("No good rifts found.")
     end
 end
 
