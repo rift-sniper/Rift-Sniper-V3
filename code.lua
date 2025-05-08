@@ -122,6 +122,13 @@ local PRE_RIFT_DELAY = 5
 
 -- LOGIC
 
+-- Load unrecognized rifts data
+local unrecognizedRifts = {}
+local content = readfile(UNRECOGNIZED_RIFTS_FILE)
+if content and content ~= "" then
+    unrecognizedRifts = HttpService:JSONDecode(content) or {}
+end
+
 -- Function to parse luck value
 local function parseLuck(luckText)
     local number = luckText:match("x(%d+)")
