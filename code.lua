@@ -84,7 +84,7 @@ local RIFT_CONFIGS = {
     WORLD_2_RIFTS = {
         enabled = true,
         rifts = {"mining-egg", "cyber-egg"},
-        minLuck = 25,
+        minLuck = 0,
         minTime = 7,
         maxPlayers = 10
     },
