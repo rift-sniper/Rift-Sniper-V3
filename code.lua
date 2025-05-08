@@ -2,11 +2,6 @@ local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 
-local UNRECOGNIZED_RIFTS_FILE = "RiftSniperV3\\unrecognized_rifts.json"
-if not isfile(UNRECOGNIZED_RIFTS_FILE) then
-    writefile(UNRECOGNIZED_RIFTS_FILE, HttpService:JSONEncode({}))
-end
-
 -- CONFIGURATION SECTION
 
 -- Webhook URLs and role IDs for Discord notifications
@@ -121,13 +116,6 @@ local LOAD_TIMEOUT = 5
 local PRE_RIFT_DELAY = 5
 
 -- LOGIC
-
--- Load unrecognized rifts data
-local unrecognizedRifts = {}
-local content = readfile(UNRECOGNIZED_RIFTS_FILE)
-if content and content ~= "" then
-    unrecognizedRifts = HttpService:JSONDecode(content) or {}
-end
 
 -- Function to parse luck value
 local function parseLuck(luckText)
@@ -351,13 +339,7 @@ local function checkRifts()
         if isInRareRifts or isInWorld1Rifts or isInWorld2Rifts or isInMiscRifts then
             continue
         end
-
-        -- Log unrecognized rift to console and file
         warn("Rift " .. riftName .. " not in any configured list at " .. os.date("%H:%M:%S"))
-        if not table.find(unrecognizedRifts, riftName) then
-            table.insert(unrecognizedRifts, riftName)
-            writefile(UNRECOGNIZED_RIFTS_FILE, HttpService:JSONEncode(unrecognizedRifts))
-        end
     end
 end
 
