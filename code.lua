@@ -147,7 +147,7 @@ local function sendWebhook(riftName, playerCount, timerText, jobId, luckValue)
         title = "Rift: " .. displayName,
         description = description,
         fields = {
-            { name = "Roblox Protocol Join Link (faster):", value = protocolLink, inline = false }
+            { name = "Join Link:", value = protocolLink, inline = false }
         },
         footer = { text = "Built by Suna" },
         color = 0xC6D4FF
