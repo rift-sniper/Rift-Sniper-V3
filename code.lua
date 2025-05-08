@@ -59,10 +59,10 @@ local RIFT_DISPLAY_NAMES = {
 -- World 2
     ["mining-egg"] = "Mining Egg",
     ["cyber-egg"] = "Cyber Egg",
-    ["dice-rift"] = "Dice Rift"
+    ["dice-rift"] = "Dice Rift",
 -- Misc
     ["royal-chest"] = "Royal Chest",
-    ["bubble-rift"] = "Bubble Rift",
+    ["bubble-rift"] = "Bubble Rift"
 }
 
 -- Rift filtering parameters
