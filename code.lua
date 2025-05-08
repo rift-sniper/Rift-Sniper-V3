@@ -72,25 +72,25 @@ local RIFT_CONFIGS = {
         rifts = { "silly-egg" },
         minLuck = 0,
         minTime = 1,
-        maxPlayers = 0
+        maxPlayers = 12
     },
     WORLD_1_RIFTS = {
         enabled = true,
         rifts = { "void-egg", "nightmare-egg", "rainbow-egg" },
-        minLuck = 0,
-        minTime = 0,
-        maxPlayers = 11
+        minLuck = 25,
+        minTime = 7,
+        maxPlayers = 8
     },
     WORLD_2_RIFTS = {
         enabled = true,
-        rifts = {"mining-egg", "cyber-egg", "dice-rift"},
+        rifts = {"mining-egg", "cyber-egg"},
         minLuck = 25,
         minTime = 7,
         maxPlayers = 10
     },
     MISC_RIFTS = {
         enabled = true,
-        rifts = {"royal-chest", "bubble-rift"},
+        rifts = {"royal-chest", "bubble-rift", "dice-rift"},
         minTime = 8,
         maxPlayers = 8
     }
