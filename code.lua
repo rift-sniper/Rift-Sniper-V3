@@ -78,8 +78,8 @@ local RIFT_CONFIGS = {
         enabled = true,
         rifts = { "void-egg", "nightmare-egg", "rainbow-egg" },
         minLuck = 0,
-        minTime = 0,
-        maxPlayers = 0
+        minTime = 2,
+        maxPlayers = 11
     },
     WORLD_2_RIFTS = {
         enabled = true,
