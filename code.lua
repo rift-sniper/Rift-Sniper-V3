@@ -241,15 +241,6 @@ local function checkRifts()
         return
     end
 
-    -- Load or initialize unrecognized rifts data
-    local unrecognizedRifts = {}
-    if isfile(UNRECOGNIZED_RIFTS_FILE) then
-        local content = readfile(UNRECOGNIZED_RIFTS_FILE)
-        if content and content ~= "" then
-            unrecognizedRifts = HttpService:JSONDecode(content) or {}
-        end
-    end
-
     for _, rift in pairs(rifts:GetChildren()) do
         local riftName = rift.Name
         local playerCount = #Players:GetPlayers() - 1
