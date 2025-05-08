@@ -2,6 +2,11 @@ local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 
+local UNRECOGNIZED_RIFTS_FILE = "RiftSniperV3\\unrecognized_rifts.json"
+if not isfile(UNRECOGNIZED_RIFTS_FILE) then
+    writefile(UNRECOGNIZED_RIFTS_FILE, HttpService:JSONEncode({}))
+end
+
 -- CONFIGURATION SECTION
 
 -- Webhook URLs and role IDs for Discord notifications
@@ -114,9 +119,6 @@ local LOAD_TIMEOUT = 5
 
 -- Delay before checking rifts (in seconds)
 local PRE_RIFT_DELAY = 5
-
--- File path for unrecognized rifts
-local UNRECOGNIZED_RIFTS_FILE = "RiftSniperV3\\unrecognized_rifts.json"
 
 -- LOGIC
 
