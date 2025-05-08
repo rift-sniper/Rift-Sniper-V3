@@ -103,10 +103,10 @@ local MASTER_IGNORE_LIST = {
     "magma-egg",
     "crystal-egg",
     "lunar-egg",
-    "hell-egg"
+    "hell-egg",
 -- Misc
     "gift-rift",
-    "golden-chest",
+    "golden-chest"
 }
 
 -- Timeout for waiting for Workspace.Rendered.Rifts to load (in seconds)
