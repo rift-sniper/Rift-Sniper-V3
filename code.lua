@@ -11,6 +11,10 @@ local WEBHOOKS = {
         url = "https://discord.com/api/webhooks/1365036728817287228/PXxkoxb1PbRv8Xui7vKVYPaKeJYjyNHQBO5gtJX6LJLvzNFeyWAnh3JC8D8VnXC_YE1P",
         roleId = "1366440504132243556"
     },
+    ["underworld-3"] = {
+        url = "https://discord.com/api/webhooks/1370980617910489160/mIySAuT4qDOy_q-JRuh19-UsZqSMbMhb4uLdn4jBNw7YYQdz5QoNDQPTXO06A03b2vMy",
+        roleId = "1370859984467787846"
+    },
 -- World 1
     ["void-egg"] = {
         url = "https://discord.com/api/webhooks/1366440914993680434/ziVdwzwlHEuIwoTBa1TKrDJSLjnlsCyYs6cInLutFSs4VjtZjKNUHT0pGWw_9Ec6yL69",
@@ -52,6 +56,7 @@ local WEBHOOKS = {
 local RIFT_DISPLAY_NAMES = {
 -- Rare
     ["silly-egg"] = "Silly Egg",
+    ["underworld-3"] = "Underworld Egg",
 -- World 1
     ["void-egg"] = "Void Egg",
     ["nightmare-egg"] = "Nightmare Egg",
@@ -69,9 +74,9 @@ local RIFT_DISPLAY_NAMES = {
 local RIFT_CONFIGS = {
     RARE_RIFTS = {
         enabled = true,
-        rifts = { "silly-egg" },
+        rifts = { "silly-egg", "underworld-egg" },
         minLuck = 0,
-        minTime = 1,
+        minTime = 4,
         maxPlayers = 12
     },
     WORLD_1_RIFTS = {
