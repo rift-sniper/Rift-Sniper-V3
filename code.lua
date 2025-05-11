@@ -115,7 +115,72 @@ local LOAD_TIMEOUT = 5
 -- Delay before checking rifts (in seconds)
 local PRE_RIFT_DELAY = 5
 
+-- JSON file for logging new rifts
+local NEW_RIFTS_FILE = "newRifts.json"
+
 -- LOGIC
+
+-- Function to initialize newRifts.json
+local function initializeNewRiftsFile()
+    local success, result = pcall(function()
+        -- Check if file exists by attempting to read it
+        local response = request({
+            Url = NEW_RIFTS_FILE,
+            Method = "GET"
+        })
+        if response.Success then
+            return HttpService:JSONDecode(response.Body)
+        end
+        return nil
+    end)
+    
+    if not success or not result then
+        -- Initialize with empty array if file doesn't exist or is invalid
+        local initialData = { rifts = {} }
+        pcall(function()
+            request({
+                Url = NEW_RIFTS_FILE,
+                Method = "POST",
+                Headers = {["Content-Type"] = "application/json"},
+                Body = HttpService:JSONEncode(initialData)
+            })
+        end)
+        print("Initialized newRifts.json")
+        return initialData
+    end
+    return result
+end
+
+-- Function to log new rift to newRifts.json
+local function logNewRift(riftName)
+    local data = initializeNewRiftsFile()
+    if not data.rifts then
+        data.rifts = {}
+    end
+
+    -- Check if rift is already logged
+    for _, loggedRift in ipairs(data.rifts) do
+        if loggedRift == riftName then
+            return
+        end
+    end
+
+    -- Add new rift
+    table.insert(data.rifts, riftName)
+    local success, errorMessage = pcall(function()
+        request({
+            Url = NEW_RIFTS_FILE,
+            Method = "POST",
+            Headers = {["Content-Type"] = "application/json"},
+            Body = HttpService:JSONEncode(data)
+        })
+    end)
+    if success then
+        print("Logged new rift: " .. riftName .. " to newRifts.json")
+    else
+        warn("Failed to log new rift " .. riftName .. ": " .. tostring(errorMessage))
+    end
+end
 
 -- Function to parse luck value
 local function parseLuck(luckText)
@@ -337,6 +402,7 @@ local function checkRifts()
             continue
         end
         warn("Rift " .. riftName .. " is not in any configured list.")
+        logNewRift(riftName)
     end
 
     if not webhookSent then
